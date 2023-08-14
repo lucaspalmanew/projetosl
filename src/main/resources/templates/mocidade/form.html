@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout.html}">
+<meta charset="UTF-8">
+<div layout:fragment="content" sec:authorize="hasAnyRole('ADMIN')">
+	<div class="alert alert-primary" th:if="${mensagem != null}" th:text="${mensagem}">
+	</div>
+	<div class="card">
+		<div class="card-header">
+			<p class="text-primary">Nova mocidade</p>
+		</div>
+		<div class="card-body">
+			<form method="POST" th:object="${mocidade}" th:action="@{/mocidade/novo}">
+				<input type="hidden" th:field="*{id}">
+				<div class="form-group mb-3">
+					<label for="nome">Nome da mocidade:</label>
+					<input
+						class="form-control" type="text" th:field="*{nome}" required></input>
+					<div class="text-danger" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></div>
+				</div>
+				<div class="form-group mb-3">
+					<label for="idade">idade:</label>
+					<input
+						class="form-control" step="0.01" min="0.1" type="number" th:field="*{idade}" required></input>
+					<div class="text-danger" th:if="${#fields.hasErrors('idade')}" th:errors="*{idade}"></div>
+				</div>
+				<div class="form-group mb-3">
+					<label for="dataNasc">data de nascimento:</label>
+					<input
+						class="form-control" step="0.01" min="0.1" type="number" th:field="*{dataNasc}" required></input>
+					<div class="text-danger" th:if="${#fields.hasErrors('dataNasc')}" th:errors="*{dataNasc}"></div>
+				</div>
+				<div class="form-group mb-3">
+					<label for="mesNasc">mes de nascimento:</label>
+					<input
+						class="form-control" type="text" th:field="*{mesNasc}" required></input>
+					<div class="text-danger" th:if="${#fields.hasErrors('mesNasc')}" th:errors="*{mesNasc}"></div>
+				</div>
+				<div class="form-group mb-3">
+					<label for="nomeResp">Nome da responsavel:</label>
+					<input
+						class="form-control" type="text" th:field="*{nomeResp}" required></input>
+					<div class="text-danger" th:if="${#fields.hasErrors('nomeResp')}" th:errors="*{nomeResp}"></div>
+				</div>
+				<div class="form-group mb-3">
+					<label for="teleResp">telefone do responsavel</label>
+					<input
+						class="form-control" type="text" th:field="*{teleResp}" required></input>
+					<div class="text-danger" th:if="${#fields.hasErrors('teleResp')}" th:errors="*{teleResp}"></div>
+				</div>
+				
+				<div class="form-group mb-3">
+					<p>mocidade</p>
+					<div th:each="mocidade: ${listaMocidade}">
+					<input type="checkbox" th:id="${mocidade}" th:value="${mocidade.id}" th:field="*{mocidade}"/>
+					<label th:text="${mocidade.nome}"></label>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary">Salvar
+					mocidade</button>
+			</form>
+		</div>
+	</div>
+</div>
+
+</html>

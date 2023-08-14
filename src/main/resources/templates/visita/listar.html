@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout.html}">
+<meta charset="UTF-8">
+<div layout:fragment="content">
+	<div class="alert alert-primary" th:if="${#lists.isEmpty(lista)}">
+		Nenhuma visita cadastrada
+	</div>
+	<div class="alert alert-primary" th:if="${mensagem != null}" th:text="${mensagem}"></div>
+	 <!-- <div th:if="${not #lists.isEmpty(lista)}"> -->
+	
+	<div class="card mb-3">
+        <div class="card-header">
+            <p class="text-primary">Filtrar visita</p>
+        </div>
+        <div class="card-body">
+            <form method="get">
+                <div class="form-group mb-3">
+                    <label for="nome">Nome:</label>
+                    <input class="form-control" type="text" name="nome" ></input>
+                </div>
+				<div class="form-group mb-3">
+                    <label for="nome">Ingrediente:</label>
+                    <input class="form-control" type="text" name="mocidade" ></input>
+                </div>
+                <button type="submit" class="btn btn-primary btn-info">Pesquisar visita</button>
+            </form>
+        </div>
+</div>
+
+		<!--  <form method="GET">
+			<div>
+				<label>Pesquisa por nome da visita:</label>
+				<input name="nome" th:value=${nome}>
+			</div>
+			<div>
+				<label>Pesquisa por nome de ingrediente:</label>
+				<input name="mocidade" th:value=${mocidade}>
+			</div>
+		<input class="btn btn-primary btn-sm" type="submit" value="Buscar">
+		</form>-->
+		<div th:if="${not #lists.isEmpty(lista)}">
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>modoPreparo</th>
+					<th>diaVisita</th>
+					<th>horario</th>
+					<th>auxiliar</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="visita : ${lista}">
+					<td th:text="${visita.id}"></td>
+					<td th:text="${visita.nome}"></td>
+					<td th:text="${visita.modoPreparo}"></td>
+					<td th:text="${visita.diaVisita}"></td>
+					<td th:text="${visita.horario} + ' minutos'"></td>
+					<td th:text="${visita.auxiliar}"></td>
+					
+					
+					<td><a class="btn btn-primary btn-sm" th:href="@{/visita/editar(id=${visita.id})}" sec:authorize="hasAnyRole('ADMIN')">Editar</a>
+					<a class="btn btn-primary btn-sm" th:href="@{/visita/excluir(id=${visita.id})}" onclick="return confirm('Você realmente deseja excluir esse visita?')" sec:authorize="hasAnyRole('ADMIN')">Excluir</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+</html>

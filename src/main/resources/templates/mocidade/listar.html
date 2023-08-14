@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+	layout:decorate="~{layout.html}">
+<meta charset="UTF-8">
+<div layout:fragment="content">
+	<div class="alert alert-primary" th:if="${#lists.isEmpty(lista)}">
+		Nenhum mocidade Cadastrado
+	</div>
+	<div class="alert alert-primary" th:if="${mensagem != null}" th:text="${mensagem}"></div>
+	<div th:if="${not #lists.isEmpty(lista)}">
+		
+		<br/>		
+		<br/>
+		<form method="GET">
+		<label>Pesquisa por nome de mocidade:</label>
+		<input name="nomepesquisa">
+		<input class="btn btn-primary btn-sm" type="submit" value="Buscar">
+		</form>
+		<form method="GET">
+			<label>Pesquisa por mês de mocidade:</label>
+			<input name="mes">
+			<input class="btn btn-primary btn-sm" type="submit" value="Buscar">
+			</form>
+		
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nome</th>
+					<th>Idade</th>
+					<th>Data de Nascimento</th>
+					<th>Mês de Nascimento</th>
+					<th>Nome do Responsável</th>
+					<th>Telefone do Responsável</th>
+					<th>Opções</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="mocidade : ${lista}">
+					<td th:text="${mocidade.id}"></td>
+					<td th:text="${mocidade.nome}" width="70%"></td>
+					<td th:text="${mocidade.idade}"></td>
+					<td th:text="${mocidade.dataNasc}"></td>
+					<td th:text="${mocidade.mesNasc}"></td>
+					<td th:text="${mocidade.nomeResp}"></td>
+					<td th:text="${mocidade.teleResp}"></td>
+					<td><a class="btn btn-primary btn-sm" th:href="@{/mocidade/editar(id=${mocidade.id})}" sec:authorize="hasAnyRole('ADMIN')">Editar</a>
+					<a class="btn btn-primary btn-sm" th:href="@{/mocidade/excluir(id=${mocidade.id})}" onclick="return confirm('Você realmente deseja excluir essa mocidade?')" sec:authorize="hasAnyRole('ADMIN')">Excluir</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+</html>
